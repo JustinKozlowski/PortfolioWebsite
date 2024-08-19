@@ -1,2 +1,2 @@
-# PortfolioWebsite
-Portfolio of projects I have worked on
+# ptxAPI
+Core API backend for gym equipment usage product

@@ -1,0 +1,51 @@
+name: Deploy FastAPI and Svelte app
+
+on:
+  push:
+    branches:
+      - main  # or the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Svelte dependencies
+      run: |
+        cd svelte  # Assuming your Svelte app is in the 'frontend' directory
+        npm install
+        npm run build
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install FastAPI dependencies
+      run: |
+        cd ../app  # Assuming your FastAPI app is in the 'backend' directory
+        pip install -r requirements.txt
+
+    - name: Deploy to Remote VM
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ variables.REMOTE_HOST }}
+        REMOTE_USER: ${{ variables.REMOTE_USER }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        # REMOTE_USER websitedeployer
+        scp -i private_key.pem -r . $REMOTE_USER@$REMOTE_HOST:/var/www/Webiste
+        ssh -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          cd /var/www/Webiste
+          docker-compose down
+          docker-compose up -d --build
+        EOF

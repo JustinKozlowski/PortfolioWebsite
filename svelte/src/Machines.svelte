@@ -1,0 +1,37 @@
+<script>
+  import Machine from './Machine.svelte';
+
+  import { machines } from './store';
+  import { onMount } from 'svelte';
+
+  // Example function to fetch data
+  async function fetchData() {
+    const response = await fetch('http://localhost:8000/' + group + '/machines');
+    const data = await response.json();
+    machines.set(JSON.parse(data)); // Update the store with the fetched data
+  }
+
+  // Fetch data on component mount
+  onMount(fetchData);
+</script>
+
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+</style>
+
+<div class="grid-container">
+
+  {#if $machines !== null}
+    {#each $machines as machine}
+      <Machine machine={machine} />
+    {/each}
+  {:else}
+    <p>Loading...</p>
+  {/if}
+</div>
