@@ -29,10 +29,10 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Install FastAPI dependencies
-      run: |
-        cd ../app  # Assuming your FastAPI app is in the 'backend' directory
-        pip install -r requirements.txt
+    # - name: Install FastAPI dependencies
+    #   run: |
+    #     cd ../app  # Assuming your FastAPI app is in the 'backend' directory
+    #     pip install -r requirements.txt
 
     - name: Deploy to Remote VM
       env:
