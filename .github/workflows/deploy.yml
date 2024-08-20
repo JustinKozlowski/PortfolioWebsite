@@ -37,6 +37,8 @@ jobs:
     - name: Deploy to Remote VM
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ env.REMOTE_HOST }}
+        REMOTE_USER: ${{ env.REMOTE_USER }}
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
