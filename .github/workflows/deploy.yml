@@ -15,10 +15,10 @@ jobs:
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
-        
-    - name: Install Svelte dependencies
       with:
         node-version: '18'
+        
+    - name: Install Svelte dependencies
       run: |
         cd svelte  # Assuming your Svelte app is in the 'frontend' directory
         npm install
