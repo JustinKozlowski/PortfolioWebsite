@@ -40,6 +40,8 @@ jobs:
         REMOTE_HOST: ${{ env.REMOTE_HOST }}
         REMOTE_USER: ${{ env.REMOTE_USER }}
       run: |
+        echo $REMOTE_USER
+        echo $REMOTE_HOST
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         # REMOTE_USER websitedeployer
