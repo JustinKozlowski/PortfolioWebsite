@@ -37,8 +37,8 @@ jobs:
     - name: Deploy to Remote VM
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        REMOTE_HOST: ${{ env.REMOTE_HOST }}
-        REMOTE_USER: ${{ env.REMOTE_USER }}
+        REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+        REMOTE_USER: ${{ vars.REMOTE_USER }}
       run: |
         echo $REMOTE_USER
         echo $REMOTE_HOST
