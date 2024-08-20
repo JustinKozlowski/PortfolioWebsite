@@ -41,7 +41,7 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    network:
+    networks:
       - web
 
 networks:
