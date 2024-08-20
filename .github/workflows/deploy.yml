@@ -46,7 +46,7 @@ jobs:
         echo "Copied app"
         scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/svelte/" $REMOTE_USER@$REMOTE_HOST:/var/www/Website
         echo "Copied svelte"
-        scp -o StrictHostKeyChecking=no -i private_key.pem $(pwd)/* $REMOTE_USER@$REMOTE_HOST:/var/www/Website
+        scp -o StrictHostKeyChecking=no -i private_key.pem $(pwd)/*.* $REMOTE_USER@$REMOTE_HOST:/var/www/Website
         echo "Copied base dir"
           
     - name: Run on Remote VM
