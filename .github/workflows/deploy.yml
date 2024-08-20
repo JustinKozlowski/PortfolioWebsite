@@ -13,22 +13,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
+    - name: Install Svelte dependencies
       uses: actions/setup-node@v3
       with:
         node-version: '18'
+      run: |
+        cd svelte  # Assuming your Svelte app is in the 'frontend' directory
+        npm install
+        npm run build
 
-    # - name: Install Svelte dependencies
-    #   run: |
-    #     cd svelte  # Assuming your Svelte app is in the 'frontend' directory
-    #     npm install
-    #     npm run build
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-
+    # - name: Set up Python
+    #   uses: actions/setup-python@v4
+    #   with:
+    #     python-version: '3.12'
+    #
     # - name: Install FastAPI dependencies
     #   run: |
     #     cd ../app  # Assuming your FastAPI app is in the 'backend' directory
