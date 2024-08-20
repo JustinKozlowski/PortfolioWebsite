@@ -42,7 +42,7 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/*" $REMOTE_USER@$REMOTE_HOST:/var/www/Website
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/*" $REMOTE_USER@$REMOTE_HOST:/var/www
         echo "Copied app"
         # scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/svelte/" $REMOTE_USER@$REMOTE_HOST:/var/www/Website
         # echo "Copied svelte"
@@ -58,7 +58,7 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
-          cd /var/www/Website
+          cd /var/www/PrortfolioWebsite
           docker compose down
           docker compose up -d --build
         EOF
