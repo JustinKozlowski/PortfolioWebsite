@@ -45,8 +45,8 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         # REMOTE_USER websitedeployer
-        scp -i private_key.pem -r . $REMOTE_USER@$REMOTE_HOST:/var/www/Webiste
-        ssh -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r . $REMOTE_USER@$REMOTE_HOST:/var/www/Webiste
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
           cd /var/www/Webiste
           docker-compose down
           docker-compose up -d --build
