@@ -40,14 +40,11 @@ jobs:
         REMOTE_HOST: ${{ vars.REMOTE_HOST }}
         REMOTE_USER: ${{ vars.REMOTE_USER }}
       run: |
-        echo $REMOTE_USER
-        echo $REMOTE_HOST
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
-        # REMOTE_USER websitedeployer
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www/Webiste
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www/Website
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
-          cd /var/www/Webiste
+          cd /var/www/Website
           docker-compose down
           docker-compose up -d --build
         EOF
