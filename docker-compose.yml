@@ -1,15 +1,44 @@
 version: '3.8'
 
 services:
-  web:
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./data/certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    networks:
+      - web
+    environment:
+      - DEFAULT_HOST=yourdomain.com
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-acme
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    networks:
+      - web
+
+  app:
     build: .
-    # command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
-    # command: ["fastapi", "dev", app.main:app"]
+    environment:
+      - VIRTUAL_HOST=justinkozlowski.me,www.justinkozlowski.me
+      - LETSENCRYPT_HOST=justinkozlowski.me,www.justinkozlowski.me
+      - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
+    restart: always
     volumes:
       - .:/app
     ports:
       - "8000:8000"
 
-# volumes:
-#   pgdata:
-#     driver: local
