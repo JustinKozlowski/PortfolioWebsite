@@ -15,7 +15,7 @@ services:
     networks:
       - web
     environment:
-      - DEFAULT_HOST=yourdomain.com
+      - DEFAULT_HOST=justinkozlowski.me
 
   acme-companion:
     image: nginxproxy/acme-companion
