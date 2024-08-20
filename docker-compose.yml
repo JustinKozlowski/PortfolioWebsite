@@ -21,7 +21,7 @@ services:
     image: nginxproxy/acme-companion
     container_name: nginx-proxy-acme
     environment:
-      - DEFAULT_EMAIL=mail@yourdomain.tld
+      - DEFAULT_EMAIL=contact@justinkozlowski.me
     volumes_from:
       - nginx-proxy
     volumes:
@@ -41,8 +41,7 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    networks:
-      - web
+    network_mode: bridge
 
 volumes:
   vhost:
@@ -50,5 +49,3 @@ volumes:
   html:
   certs:
   acme:
-networks:
-  web:
