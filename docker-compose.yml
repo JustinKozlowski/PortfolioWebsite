@@ -33,8 +33,8 @@ services:
   app:
     build: .
     environment:
-      - VIRTUAL_HOST=justinkozlowski.me,www.justinkozlowski.me
-      - LETSENCRYPT_HOST=justinkozlowski.me,www.justinkozlowski.me
+      - VIRTUAL_HOST=www.justinkozlowski.me
+      - LETSENCRYPT_HOST=www.justinkozlowski.me
       - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
     restart: always
     volumes:
