@@ -11,4 +11,4 @@ router = APIRouter()
 
 @router.get("/")
 def read_machine_movements():
-    return 'hello world'
+    return 'hello world again'

@@ -12,4 +12,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["fastapi", "dev", "--host", "0.0.0.0", "/app/app/main.py"]
+CMD ["fastapi", "--host", "0.0.0.0", "/app/app/main.py"]
