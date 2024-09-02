@@ -39,21 +39,22 @@ jobs:
         
   deploy2:
     runs-on: ubuntu-latest
+    needs: build-and-push  # Ensures deploy runs only after build-and-push job completes
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: Install Svelte dependencies
-      run: |
-        cd frontend  # Assuming your Svelte app is in the 'frontend' directory
-        npm install
-        npm run build
+    # - name: Setup Node.js
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: '18'
+    #     
+    # - name: Install Svelte dependencies
+    #   run: |
+    #     cd frontend  # Assuming your Svelte app is in the 'frontend' directory
+    #     npm install
+    #     npm run build
 
     # - name: Set up Python
     #   uses: actions/setup-python@v4
@@ -74,8 +75,18 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         rm -r .git
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          ls /var/www/PortfolioWebsite
+        EOF
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd)/docker-compose.yml $REMOTE_USER@$REMOTE_HOST:/var/www/PortfolioWebsite
         echo "Copied app"
+        
+        ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker-compose -f /var/www/PortfolioWebsite/docker-compose.yml pull
+          docker-compose -f /var/www/PortfolioWebsite/docker-compose.yml up -d
+          docker logout
+        EOF
         # scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/svelte/" $REMOTE_USER@$REMOTE_HOST:/var/www/Website
         # echo "Copied svelte"
         # scp -o StrictHostKeyChecking=no -i private_key.pem $(pwd)/*.* $REMOTE_USER@$REMOTE_HOST:/var/www/Website
