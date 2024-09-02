@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: justinkozlowski/projects:portfolio
     environment:
       - VIRTUAL_HOST=www.justinkozlowski.me
       - LETSENCRYPT_HOST=www.justinkozlowski.me
       - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
     restart: always
-    # volumes:
-    #   - .:/app
     ports:
       - "8000:8000"
     network_mode: bridge

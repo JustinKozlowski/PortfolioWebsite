@@ -8,7 +8,11 @@ WORKDIR /app
 COPY frontend/ .
 
 # Install dependencies and build the Svelte project
-RUN npm install
+# RUN npm install
+
+RUN rm -rf node_modules package-lock.json && npm install
+
+RUN npm list
 
 RUN npm run build
 
