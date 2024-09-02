@@ -37,6 +37,62 @@ jobs:
       - name: Log out from Docker registry
         run: docker logout
         
+  deploy2:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install Svelte dependencies
+      run: |
+        cd svelte  # Assuming your Svelte app is in the 'frontend' directory
+        npm install
+        npm run build
+
+    # - name: Set up Python
+    #   uses: actions/setup-python@v4
+    #   with:
+    #     python-version: '3.12'
+    #
+    # - name: Install FastAPI dependencies
+    #   run: |
+    #     cd ../app  # Assuming your FastAPI app is in the 'backend' directory
+    #     pip install -r requirements.txt
+
+    - name: Copy to Remote VM
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+        REMOTE_USER: ${{ vars.REMOTE_USER }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        rm -r .git
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www
+        echo "Copied app"
+        # scp -o StrictHostKeyChecking=no -i private_key.pem -r "$(pwd)/svelte/" $REMOTE_USER@$REMOTE_HOST:/var/www/Website
+        # echo "Copied svelte"
+        # scp -o StrictHostKeyChecking=no -i private_key.pem $(pwd)/*.* $REMOTE_USER@$REMOTE_HOST:/var/www/Website
+        # echo "Copied base dir"
+          
+    - name: Run on Remote VM
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+        REMOTE_USER: ${{ vars.REMOTE_USER }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          cd /var/www/PortfolioWebsite
+        EOF
+  
   deploy:
     needs: build-and-push  # Ensures deploy runs only after build-and-push job completes
     runs-on: ubuntu-latest
