@@ -78,7 +78,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
           ls /var/www/PortfolioWebsite
         EOF
-        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd)/docker-compose.yml $REMOTE_USER@$REMOTE_HOST:/var/www/PortfolioWebsite
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www/
         echo "Copied app"
         
         ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST << 'EOF'
