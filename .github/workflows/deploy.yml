@@ -20,7 +20,7 @@ jobs:
         
     - name: Install Svelte dependencies
       run: |
-        cd svelte  # Assuming your Svelte app is in the 'frontend' directory
+        cd frontend  # Assuming your Svelte app is in the 'frontend' directory
         npm install
         npm run build
 
