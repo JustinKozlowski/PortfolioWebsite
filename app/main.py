@@ -17,5 +17,4 @@ app.add_middleware(
 
 app.include_router(api_router)
 app.include_router(static_router)
-app.mount("/", StaticFiles(directory="svelte/public", html=True), name="client")
-app.mount("/build", StaticFiles(directory="svelte/public/build"), name="build")
+app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="client")
