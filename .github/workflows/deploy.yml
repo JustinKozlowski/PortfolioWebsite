@@ -61,8 +61,8 @@ jobs:
         echo "Copied app"
         
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker-compose -f /var/www/PortfolioWebsite/docker-compose.yml pull
-          docker-compose -f /var/www/PortfolioWebsite/docker-compose.yml up -d
+          docker login -u $DOCKER_USERNAME -p '$DOCKER_PASSWORD'
+          docker compose -f /var/www/PortfolioWebsite/docker-compose.yml pull
+          docker compose -f /var/www/PortfolioWebsite/docker-compose.yml up -d
           docker logout
         EOF
