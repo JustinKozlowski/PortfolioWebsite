@@ -36,4 +36,4 @@ RUN ls frontend/
 
 EXPOSE 8000
 
-ENTRYPOINT ["fastapi", "run", "--host", "0.0.0.0", "/app/main.py"]
+CMD ["fastapi", "run", "--host", "0.0.0.0", "/app/app/main.py"]
