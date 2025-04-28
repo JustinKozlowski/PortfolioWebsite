@@ -59,10 +59,14 @@ jobs:
         EOF
         scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www/
         echo "Copied app"
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          cd /var/www/${{ github.event.repository.name }}
+          rm private_key.pem
+        EOF
         
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
           docker login -u $DOCKER_USERNAME -p '$DOCKER_PASSWORD'
-          docker compose -f /var/www/PortfolioWebsite/docker-compose.yml pull
-          docker compose -f /var/www/PortfolioWebsite/docker-compose.yml up -d
+          docker compose -f /var/www/${{ github.event.repository.name }}/docker-compose.yml pull
+          docker compose -f /var/www/${{ github.event.repository.name }}/docker-compose.yml up -d
           docker logout
         EOF
